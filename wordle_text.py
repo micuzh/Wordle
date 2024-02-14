@@ -37,7 +37,7 @@ def main():
             tries += 1
             revealed = '-----'
 
-            guess = input('\nEnter your guess. A 5 letter word: ').upper()
+            guess = input('\nEnter your guess. A 5 letter word: ', end='').upper()
             if guess not in all_words:
                 print(guess, 'is not a valid word. Please try again.', end='')
                 tries -= 1
