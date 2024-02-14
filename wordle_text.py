@@ -66,9 +66,11 @@ def main():
             print()
             for line in progress:
                 print(line)
-            print('\nUnused Letters: ', end='')
-            for letter in unused_letters:
-                print(letter.upper(), '',end='')
+            print('\nUnused letters: ', end='')
+
+
+            result = ' '.join(letter.upper() for letter in unused_letters)
+            print(result)
             print()
             
             if revealed == 'GGGGG':
