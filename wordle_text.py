@@ -68,10 +68,8 @@ def main():
                 print(line)
             print('\nUnused letters: ', end='')
 
-
             result = ' '.join(letter.upper() for letter in unused_letters)
             print(result)
-            print()
             
             if revealed == 'GGGGG':
                 win = True
