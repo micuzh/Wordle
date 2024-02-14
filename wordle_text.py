@@ -22,7 +22,7 @@ def main():
 
     replay = 'Y'
 
-    while replay == 'Y':
+    while replay.upper() == 'Y':
 
         secret_word = (secret_words[random.randrange(len(secret_words))]).upper()
         unused_letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'
@@ -37,9 +37,10 @@ def main():
             tries += 1
             revealed = '-----'
 
-            guess = input('\nEnter your guess. A 5 letter word: ', end='').upper()
+            guess = input('\nEnter your guess. A 5 letter word: ').upper()
             if guess not in all_words:
-                print(guess, 'is not a valid word. Please try again.', end='')
+                print()
+                print(guess, 'is not a valid word. Please try again.')
                 tries -= 1
                 continue
 
