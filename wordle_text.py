@@ -20,63 +20,70 @@ def main():
     secret_words, all_words = get_words()
     welcome_and_instructions()
 
-    secret_word = (secret_words[random.randrange(len(secret_words))]).upper()
-    print(secret_word)
-    unused_letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'
-                            , 'k', 'l', 'm', 'n', 'o', 'p', 'q','r'
-                            , 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    replay = 'Y'
 
-    progress = []
-    tries = 0
-    win = False
-    
-    while tries < 6:
-        tries += 1
-        revealed = '-----'
+    while replay == 'Y':
 
-        guess = input('\nEnter your guess. A 5 letter word: ').upper()
-        if guess not in all_words:
-            print('\n', guess, 'is not a valid word. Please try again.')
-            tries -= 1
-            continue
+        secret_word = (secret_words[random.randrange(len(secret_words))]).upper()
+        unused_letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'
+                                , 'k', 'l', 'm', 'n', 'o', 'p', 'q','r'
+                                , 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
-
-        for i in range(0,5):
-            if guess[i].lower() in unused_letters: #update letters list
-                unused_letters.remove(guess[i].lower())
-            if guess[i] == secret_word[i]: #update revealed
-                revealed = revealed[:i] + 'G' + revealed[i + 1:]
+        progress = []
+        tries = 0
+        win = False
         
-        freq = {}
-        for letter in secret_word: #dict of occurences of letter, like a mapping to frequency
-            freq[letter] = freq.get(letter, 0) + 1
+        while tries < 6:
+            tries += 1
+            revealed = '-----'
 
-        for i in range(0,5):
-            if guess[i] in secret_word and revealed[i] != 'G' and freq[guess[i]] > 0:
-                revealed = revealed[:i] + 'O' + revealed[i + 1:] #STRAP, POOOP
-                freq[guess[i]] = freq.get(guess[i], 0) - 1
+            guess = input('\nEnter your guess. A 5 letter word: ').upper()
+            if guess not in all_words:
+                print('\n', guess, 'is not a valid word. Please try again.')
+                tries -= 1
+                continue
+
+            freq = {}
+            for letter in secret_word: #dict of occurences of letter, like a mapping to frequency
+                freq[letter] = freq.get(letter, 0) + 1
+
+            for i in range(0,5):
+                if guess[i].lower() in unused_letters: #update letters list
+                    unused_letters.remove(guess[i].lower())
+                if guess[i] == secret_word[i]: #update revealed
+                    revealed = revealed[:i] + 'G' + revealed[i + 1:]
+                    freq[guess[i]] = freq.get(guess[i], 0) - 1
+
+            for i in range(0,5):
+                if guess[i] in secret_word and revealed[i] != 'G' and freq[guess[i]] > 0:
+                    revealed = revealed[:i] + 'O' + revealed[i + 1:] #STRAP, POOOP
+                    freq[guess[i]] = freq.get(guess[i], 0) - 1
 
 
-        progress.append(revealed)
-        progress.append(guess)
+            progress.append(revealed)
+            progress.append(guess)
 
-        print()
-        for line in progress:
-            print(line)
-        print('\nUnused Letters: ')
-        for letter in unused_letters:
-            print(letter, ' ', end='')
-        print()
-        if revealed == 'GGGGG':
-            win = True
-            break
+            print()
+            for line in progress:
+                print(line)
+            print('\nUnused Letters: ', end='')
+            for letter in unused_letters:
+                print(letter.upper(), '',end='')
+            print()
+            
+            if revealed == 'GGGGG':
+                win = True
+                break
 
-    commentary = ('Genius!', 'Magnificent!', 'Impressive!', 'Splendid!'
-                    , 'Great!', 'Phew!')
-    if win:
-        print('\nYou win.', commentary[tries - 1])
-    else:
-        print('\nNot quite. The secret word was ', secret_word, '.',sep='')
+        commentary = ('Genius!', 'Magnificent!', 'Impressive!', 'Splendid!'
+                        , 'Great!', 'Phew!')
+        if win:
+            print('\nYou win.', commentary[tries - 1])
+        else:
+            print('\nNot quite. The secret word was ', secret_word, '.',sep='')
+
+        replay = input('\nDo you want to play again? Type Y for yes: ')
+
 
 
 def welcome_and_instructions():
