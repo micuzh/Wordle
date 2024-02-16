@@ -8,7 +8,6 @@ import random
 
 
 def main():
-
     """ Plays a text based version of Wordle.
         1. Read in the words that can be choices for the secret word
         and all the valid words. The secret words are a subset of
@@ -21,22 +20,18 @@ def main():
     welcome_and_instructions()
 
     replay = 'Y'
-
     while replay.upper() == 'Y':
-
-        secret_word = (secret_words[random.randrange(len(secret_words))]).upper()
+        secret_word = (
+                secret_words[random.randrange(len(secret_words))]).upper()
         unused_letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'
                                 , 'k', 'l', 'm', 'n', 'o', 'p', 'q','r'
                                 , 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-
         progress = []
         tries = 0
         win = False
-        
         while tries < 6:
             tries += 1
             revealed = '-----'
-
             guess = input('\nEnter your guess. A 5 letter word: ').upper()
             if guess not in all_words:
                 print()
@@ -45,21 +40,22 @@ def main():
                 continue
 
             freq = {}
-            for letter in secret_word: #dict of occurences of letter, like a mapping to frequency
+            for letter in secret_word: #dict of mapping to frequency
                 freq[letter] = freq.get(letter, 0) + 1
 
             for i in range(0,5):
                 if guess[i].lower() in unused_letters: #update letters list
                     unused_letters.remove(guess[i].lower())
-                if guess[i] == secret_word[i]: #update revealed
+                if guess[i] == secret_word[i]: #update greened letters
                     revealed = revealed[:i] + 'G' + revealed[i + 1:]
                     freq[guess[i]] = freq.get(guess[i], 0) - 1
 
             for i in range(0,5):
-                if guess[i] in secret_word and revealed[i] != 'G' and freq[guess[i]] > 0:
-                    revealed = revealed[:i] + 'O' + revealed[i + 1:] #STRAP, POOOP
+                if (guess[i] in secret_word 
+                        and revealed[i] != 'G' 
+                        and freq[guess[i]] > 0): #update yellowed letters
+                    revealed = revealed[:i] + 'O' + revealed[i + 1:]
                     freq[guess[i]] = freq.get(guess[i], 0) - 1
-
 
             progress.append(revealed)
             progress.append(guess)
@@ -84,7 +80,6 @@ def main():
             print('\nNot quite. The secret word was ', secret_word, '.',sep='')
 
         replay = input('\nDo you want to play again? Type Y for yes: ')
-
 
 
 def welcome_and_instructions():
